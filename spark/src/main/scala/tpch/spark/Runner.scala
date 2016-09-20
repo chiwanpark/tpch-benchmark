@@ -36,6 +36,9 @@ object Runner {
       case 22 => new Query22(conf).execute()
     }
 
-    result.show()
+    conf.resultPath match {
+      case Some(path) => result.rdd.map(_.mkString("|")).saveAsTextFile(path)
+      case None => result.show()
+    }
   }
 }
